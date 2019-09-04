@@ -1,0 +1,13 @@
+.item {
+  color: red;
+}
+
+.item img {
+  width: 50px;
+}
+.posts{
+  margin-top: 10px;
+}
+.postsBlock{
+  padding: 10px;
+}

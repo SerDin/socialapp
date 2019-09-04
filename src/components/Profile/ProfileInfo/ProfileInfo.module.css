@@ -1,0 +1,13 @@
+.item {
+  color: red;
+}
+.itemImg {
+  height: 300px;
+  width: 100%;
+}
+.itemImgAva{
+  height: 120px;
+}
+.descriptionBlock{
+  padding: 10px;
+}
