@@ -1,7 +1,10 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
+<<<<<<< HEAD
 /.idea
+=======
+>>>>>>> 19f7b84... add app to git
 /node_modules
 /.pnp
 .pnp.js
