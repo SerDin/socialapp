@@ -2,25 +2,22 @@ import React from "react";
 import s from "./MyPosts.module.css";
 import Post from "./Post/Post";
 
-const MyPosts = (props) => {
 
-    let postsElement = props.postData.map(p => (
+const MyPosts = (props) => {
+    let postsElement = props.post.map(p => (
         <Post message={p.message} likeCount={p.likeCount} key={p.id}/>
     ));
 
     let newPostElement = React.createRef();
 
     let addPost = () => {
-        // props.addPost();
-        let action = {type: 'ADD-POST'};
-        props.dispatch(action);
+        props.addPost()
     };
 
     let onPostChange = () => {
         let text = newPostElement.current.value;
             // props.updateNewPostText(text)
-        let action = {type: 'UPDATE-NEW-POST-TEXT', newText: text};
-        props.dispatch(action)
+        props.onPostChange(text)
     };
 
     return (
@@ -44,4 +41,5 @@ const MyPosts = (props) => {
         </div>
     );
 };
+
 export default MyPosts;

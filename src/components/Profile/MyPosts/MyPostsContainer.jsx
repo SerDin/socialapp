@@ -1,47 +1,47 @@
-import React from "react";
-import s from "./MyPosts.module.css";
-import Post from "./Post/Post";
-import {addPostActionCreator, updateNewPostTextActionCreate} from "../../../Redux/profile-reducer";
+import React from 'react'
+import { addPostActionCreator, updateNewPostTextActionCreate } from '../../../Redux/profile-reducer'
+import MyPosts from './MyPosts'
+import { connect } from 'react-redux'
 
 
-const MyPosts = (props) => {
+/*const MyPostsContainer = (props) => {
 
-    let postsElement = props.postData.map(p => (
-        <Post message={p.message} likeCount={p.likeCount} key={p.id}/>
-    ));
-
-    let newPostElement = React.createRef();
+    let state = props.store.getState();
 
     let addPost = () => {
-        // props.addPost();
-        props.dispatch(addPostActionCreator());
+        props.store.dispatch(addPostActionCreator());
     };
 
-    let onPostChange = () => {
-        let text = newPostElement.current.value;
-            // props.updateNewPostText(text)
-        props.dispatch(updateNewPostTextActionCreate(text))
+    let onPostChange = (text) => {
+        props.store.dispatch(updateNewPostTextActionCreate(text))
     };
 
     return (
-        <div className={s.postsBlock}>
-            <h3>My posts</h3>
-            <div>
-                <div>
-                    <textarea
-                        ref={newPostElement}
-                        onChange={onPostChange}
-                        value={props.newPostText}
-                        placeholder={'add new post'}
-                    />
-                </div>
-                <div>
-                    <button onClick={addPost}>Submit</button>
-                </div>
-                <div className={s.posts}>New post</div>
-                {postsElement}
-            </div>
-        </div>
+        <MyPosts
+            addPost={addPost}
+            onPostChange={onPostChange}
+            post={state.profilePage.postData}
+            newPostText={state.profilePage.newPostText}/>
     );
+};*/
+
+let mapStateToProps = (state) => {
+    return {
+        post: state.profilePage.postData,
+        newPostText: state.profilePage.newPostText
+    }
 };
-export default MyPosts;
+
+let mapDispatchToProps = (dispatch) => {
+    return {
+        addPost: () => {
+            dispatch(addPostActionCreator())
+        },
+        onPostChange: (text) => {
+            dispatch(updateNewPostTextActionCreate(text))
+        }
+    }
+};
+
+let MyPostsContainer = connect(mapStateToProps, mapDispatchToProps)(MyPosts);
+export default MyPostsContainer

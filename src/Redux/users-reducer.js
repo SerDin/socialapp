@@ -1,44 +1,72 @@
-const UPDATE_NEW_MESSAGE_BODY = 'UPDATE-NEW-MESSAGE-BODY'
-const SEND_MESSAGE = 'SEND_MESSAGE'
+const FOLLOW = 'FOLLOW';
+const UNFOLLOW = 'UNFOLLOW';
+const SET_USERS = 'SET_USERS';
+
 
 let initialState = {
-    dialogsData: [
-        { id: 1, name: 'Sergey' },
-        { id: 2, name: 'Dima' },
-        { id: 3, name: 'Sveta' },
-        { id: 4, name: 'Katerine' },
-        { id: 5, name: 'Julia' },
-        { id: 6, name: 'Nicolas' }
+    users: [/*
+        {
+            id: 1,
+            photoURL:'http://www.pkicon.com/ru/download/avatar-the-last-airbender-icon-39031/png/',
+            followed: false,
+            fullName: 'Sergey',
+            status: 'I am a boss',
+            location: {city: 'Minsk', country: 'Belarus'}
+        },
+        {
+            id: 2,
+            photoURL:'http://www.pkicon.com/ru/download/fairy-tail-icon-39034/png/',
+            followed: true,
+            fullName: 'Nicola',
+            status: 'I am a boss',
+            location: {city: 'Moscow', country: 'Russia'}
+        },
+        {
+            id: 3,
+            photoURL:'http://www.pkicon.com/ru/download/fullmetal-alchemist-icon-39035/png/',
+            followed: false,
+            fullName: 'Dimych',
+            status: 'I am a boss',
+            location: {city: 'Kiev', country: 'Ukraine'}
+        },*/
     ],
-    messageData: [
-        { id: 1, message: 'Hi!' },
-        { id: 2, message: 'Yo!' },
-        { id: 3, message: 'Hello!' },
-        { id: 4, message: 'How are you?!' }
-    ],
-    newMessageBody: '',
-}
+};
 
-const dialogReducer = (state = initialState, action) => {
+const usersReducer = (state = initialState, action) => {
     switch (action.type) {
-        case UPDATE_NEW_MESSAGE_BODY:
+        case FOLLOW:
             return {
                 ...state,
-                newMessageBody: action.body
-            }
-        case SEND_MESSAGE:
-            let body = state.newMessageBody
+                users: state.users.map(u => {
+                    if (u.id === action.userId) {
+                        return {...u, followed: true}
+                    }
+                    return u
+                })
+            };
+        case UNFOLLOW:
             return {
                 ...state,
-                newMessageBody: '',
-                messageData: [...state.messageData, { id: 111, message: body }]
+                users: state.users.map(u => {
+                    if (u.id === action.userId) {
+                        return {...u, followed: false}
+                    }
+                    return u
+                })
+            };
+        case SET_USERS: {
+            return {
+                ...state,
+                users: [...state.users, ...action.users]
             }
+        }
         default:
             return state
     }
-}
+};
 
-export const sendMessageCreator = () => ({ type: SEND_MESSAGE })
-export const updateNewMessageBodyCreator = (body) => ({ type: UPDATE_NEW_MESSAGE_BODY, body: body })
+export const followAC = (userId) => ({type: FOLLOW, userId});
+export const unfollowAC = (userId) => ({type: UNFOLLOW, userId});
+export const setUsersAC = (users) => ({type: SET_USERS, users});
 
-export default dialogReducer
+export default usersReducer
