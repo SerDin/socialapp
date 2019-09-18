@@ -1,31 +1,40 @@
 import React from 'react'
 import s from './users.module.css'
-import * as axios from 'axios'
 import userPhoto from '../../assets/load_user_avatar.gif'
 
 let Users = (props) => {
+    let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
 
-    if (props.users.length === 0) {
-        axios
-            .get('https://social-network.samuraijs.com/api/1.0/users')
-            .then(response =>{
-                props.setUsers(response.data.items)})
+    let pages = [];
+    for (let i = 1; i <= pagesCount; i++) {
+        pages.push(i);
     }
 
-    return (
+    return <div>
         <div>
-            {props.users.map(u => <div key={u.id}>
+            {pages.map(p => <span
+                className={props.currentPage === p && s.selectPage}
+                onClick={() => {
+                    props.onPageChanged(p)
+                }}
+            >{p}</span>)}
+        </div>
+        {props.users.map(u => <div key={u.id}>
                 <span>
                     <div>
                         <img className={s.photo} src={u.photos.small != null ? u.photos.small : userPhoto} alt=""/>
                     </div>
                     <div>
                         {u.followed
-                            ? <button onClick={()=>{props.unfollow(u.id)}}>Unfollow</button>
-                            :  <button onClick={()=>{props.follow(u.id)}}>Follow</button>}
+                            ? <button onClick={() => {
+                                props.unfollow(u.id)
+                            }}>Unfollow</button>
+                            : <button onClick={() => {
+                                props.follow(u.id)
+                            }}>Follow</button>}
                     </div>
                 </span>
-                <span>
+            <span>
                     <span>
                         <div> {u.name}</div>
                         <div>{u.status}</div>
@@ -35,9 +44,9 @@ let Users = (props) => {
                         <div>{'u.location.country'}</div>
                     </span>
                 </span>
-            </div>)}
-        </div>
-    )
-}
+        </div>)}
+    </div>
+};
 
-export default Users
+
+export default Users;
